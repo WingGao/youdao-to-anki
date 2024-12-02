@@ -16,28 +16,9 @@ function getClient(){
     });
 }
 /**
- * 有道词典的单词本同步到本地
- * @param params 
+ * 将有道词典的单词同步到本地
+ * 使用了客户端的接口
  */
-export async function syncBookToLocal() {
-    const config = getConfig();
-    logger.info('开始同步单词本到本地');
-    const client = getClient();
-    const { data } = await client.get('https://dict.youdao.com/wordbook/webapi/books');
-    logger.info('获取单词本列表', data);
-}
-
-export async function syncWordToLocal(bookId: string) {
-    const client = getClient();
-    let offset = 0;
-    let limit = 100;
-    while(true) {
-        const { data } = await client.get(`http://dict.youdao.com/wordbook/webapi/words?limit=${limit}&offset=${offset}&bookId=${bookId}`);
-        logger.info('获取单词列表', data);
-        offset += limit;
-    }
-}
-
 export async function syncToLocal() {
     const client = getClient();
 

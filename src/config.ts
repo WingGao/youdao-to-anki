@@ -8,6 +8,12 @@ export interface IConfig {
     youdao: {
         cookie: string;
     }
+    anki: {
+        connect: string;
+    }
+    mdict: {
+        oald10: string;
+    }
 }
 
 let globalConfig: IConfig;
