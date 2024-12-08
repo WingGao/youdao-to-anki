@@ -19,8 +19,10 @@
     "axios": "^1.7.8",
     "better-sqlite3": "^11.6.0",
     "globby": "^14.0.2",
+    "jquery": "^3.7.1",
     "js-mdict": "v6.0.0-alpha-2",
     "js-yaml": "^4.1.0",
+    "jsdom": "^25.0.1",
     "lodash-es": "^4.17.21",
     "log4js": "^6.9.1",
     "typeorm": "^0.3.20"
