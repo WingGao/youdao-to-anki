@@ -36,11 +36,11 @@ var oaldpeConfig = {
 
     // 【配置项8：是否启用在线单词发音】（如果为 true，则可删除 oaldpe.1.mdd 文件）
     // 选项（默认为false）：false=否，true=是
-    onlineWordPron: false,
+    onlineWordPron: true,
 
     // 【配置项9：是否启用在线图片】（如果为 true，则可删除 oaldpe.2.mdd 文件。注：在线图片无中文翻译）
     // 选项（默认为false）：false=否，true=是
-    onlineImage: false,
+    onlineImage: true,
 
     // 【配置项10：离线图片翻译选项】（当【是否启用在线图片】设置为 true 时，图片翻译无效）
     // 选项（默认为3）：0-不使用翻译，1-简体中文翻译，2-港版繁体翻译，3-根据配置项【中文翻译选项】和配置项【是否使用繁体中文翻译】自动选择
@@ -1186,5 +1186,13 @@ function ox10Main() {
 function ox10Wing(){
     $('.phonetics .phons_br .phon').prepend('<span style="font-style: italic;">BrE:</span>');
     $('.phonetics .phons_n_am .phon').prepend('<span style="font-style: italic;">AmE:</span>');
+    // 主单词发音用本地
+    let $pronUs = $('.webtop > .phonetics .phons_n_am .pron-us');
+    $pronUs.off('click');
+    $pronUs.on('click',(event)=>{
+        event.stopPropagation();
+        event.preventDefault();
+        $('#py-audio a').click();
+    });
 }
 $(ox10Main);

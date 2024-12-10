@@ -3,7 +3,7 @@ import { loadConfig } from "./config";
 import path from 'path';
 import * as youdao from './youdao';
 import { initDB } from './entity';
-import { ox10Lookup } from './mdict';
+import { ox10Lookup, ox10LookupFile } from './mdict';
 import * as anki from './anki';
 
 const args = Parse(process.argv)
@@ -14,11 +14,12 @@ const config = loadConfig(path.join(workDir, 'config.yaml'));
 async function main() {
     await initDB(config.workDir);
     // await youdao.syncToLocal();
-    // await anki.addOX10Model() //先添加模型
-    anki.syncOX10ModelJs();
+    await anki.addOX10Model() //先添加模型
+    await anki.syncOX10ModelJs();
+    //TODO 拆解ox10的Idioms/Phrasal Verbs
     const oxWord = await ox10Lookup('ask');
     // return
-    const ankiRep = await anki.addToDeck(config.anki.defaultDeck, oxWord.toAnkiFields());
+    const ankiRep = await anki.addToDeck(config.anki.defaultDeck, await oxWord.toAnkiFields());
     if(ankiRep.error) {
         console.error(ankiRep.error);
     }

@@ -2,7 +2,6 @@ youdao:
   cookie: '' # https://dict.youdao.com/webwordbook/wordlist 的 cookie
 
 anki:
-  dataDir: 'C:\\Users\\Name\\AppData\\Roaming\\Anki2\\账户 1' # anki 的数据目录
   connect: http://127.0.0.1:8765 # anki connect 的地址
   defaultDeck: 'Youdao' # 默认的anki deck
   defaultNoteModel: 'OX10' # 默认的anki note model

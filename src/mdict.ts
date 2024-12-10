@@ -32,8 +32,11 @@ class MdictWorker {
     }
 
     async findFile(filename:string) {
-        let resList = await Promise.all(this.mdds.map(mdd => mdd.lookup(filename)));
-        return resList.find(res => res);
+        filename = filename.split('://')[1];
+        // "\\007__gb_1.mp3"
+        let lookupKey = '\\'+filename;
+        let resList = await Promise.all(this.mdds.map(mdd => mdd.lookup(lookupKey)));
+        return resList.find(res => res.definition != null && res.keyText == lookupKey);
     }
 }
 
@@ -44,11 +47,12 @@ class LookupResult {
         definition:string;
     }[] = [];
 
-    toAnkiFields(): IAnkiNoteFields {
+    async toAnkiFields(): Promise<IAnkiNoteFields> {
+        let audioRes = await ox10LookupFile(this.phonetics.usAudio,true);
         return {
             word: this.word,
             phonetic: this.phonetics.us,
-            // audio: this.phonetics.usAudio,
+            audio: {name: 'ox10_'+audioRes.keyText.split('\\')[1], path: audioRes.path!!},
             definition: this.entries.map(e => e.definition).join('<hr/>'),
         }
     }
@@ -65,7 +69,7 @@ export async function ox10Lookup(word: string):Promise<LookupResult> {
         ox10 = new MdictWorker(getConfig().mdict.oald10);
     }
     const def = ox10.lookup(word);
-    fs.writeFileSync(path.join(getConfig().workDir, `ox10_${word}.html`), def.definition!!); //测试用
+    // fs.writeFileSync(path.join(getConfig().workDir, `ox10_${word}.html`), def.definition!!); //测试用
     // 在线样式 https://oalecd10.cp.com.cn/#/desktop/dict
     const $ = createJqFromSrc(def.definition!!);
     const oaldpeJq = $($.find('oaldpe'))
@@ -97,5 +101,27 @@ export async function ox10Lookup(word: string):Promise<LookupResult> {
         //TODO 提取习语idioms
     });
 
+    return res;
+}
+
+/**
+ * 查找音频文件，返回base64
+ * @param f 
+ * @returns 
+ */
+export async function ox10LookupFile(f: string, output:boolean = false): Promise<{keyText:string,definition?:string, path?:string}> {
+    let res:any = await ox10.findFile(f);
+    if(output && res?.definition != null) {
+        let oxResDir = path.join(getConfig().workDir, 'ox10_res');
+        if(!fs.existsSync(oxResDir)) {
+            fs.mkdirSync(oxResDir);
+        }
+        let fname = res.keyText.split('\\')[1];
+        let fpath = path.join(oxResDir, fname);
+        if(!fs.existsSync(fpath)) {
+            fs.writeFileSync(fpath, Buffer.from(res.definition!!, 'base64'));
+        }
+        res.path = fpath;
+    }
     return res;
 }

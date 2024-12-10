@@ -10,7 +10,6 @@ export interface IConfig {
         cookie: string;
     }
     anki: {
-        dataDir: string;
         connect: string;
         defaultDeck: string;
         defaultNoteModel: string;
