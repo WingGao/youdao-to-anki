@@ -2,6 +2,7 @@ import yaml from 'js-yaml';
 import fs from 'fs';
 import path from 'path';
 import { DataSource } from "typeorm"
+import Logger from "log4js";
 
 export interface IConfig {
     assertsDir: string;
@@ -35,3 +36,9 @@ export function getConfig() {
     return globalConfig;
 }
 
+
+export function getLogger(name?: string) {
+    const logger = Logger.getLogger(name);
+    logger.level = 'debug';
+    return logger;
+}
