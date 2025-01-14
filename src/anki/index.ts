@@ -23,7 +23,7 @@ export interface IAnkiRepBase {
     error?: string;
 }
 
-let _client:AxiosInstance;  
+let _client:AxiosInstance;
 function getClient(){
     // https://foosoft.net/projects/anki-connect/
     if(_client == null) {
@@ -44,7 +44,7 @@ async function post(params) {
 }
 let _mediaDir: string;
 async function getMediaDir() {
-    if(_mediaDir == null) {       
+    if(_mediaDir == null) {
         const rep = await post({
             "action": "getMediaDirPath",
             "version": 6,
@@ -54,6 +54,9 @@ async function getMediaDir() {
     return _mediaDir;
 }
 
+/**
+ * 同步OX10模型js和css
+ */
 export async function syncOX10ModelJs() {
     const files = ['ox10_main.js', 'ox10_main.css'];
     for(const file of files) {
