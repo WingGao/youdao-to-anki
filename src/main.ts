@@ -16,7 +16,7 @@ async function main() {
   await initDB(config.workDir);
   await youdao.syncToLocal(); //将有道词典的单词同步到本地
   // await anki.addOX10Model() //先添加模型
-  // await anki.syncOX10ModelJs();  //先添加模型
+  await anki.syncOX10ModelJs();  //先添加模型
 
   // 有道->anki
   // return
@@ -26,12 +26,13 @@ async function main() {
       logger.info(`${word.word} 包含空格，跳过`);
       continue;
     }
-    
+
     const oxWord = await ox10Lookup(word.word);
     if (oxWord.word == null || oxWord.word.toLowerCase() != word.word.toLowerCase()) {
       logger.info(`${word.word} 与 ox10 查词 ${oxWord.word} 结果不一致，跳过`);
     } else {
       const ankiRep = await anki.addToDeck(config.anki.defaultDeck, await oxWord.toAnkiFields());
+      if(ankiRep.error != null) throw new Error(ankiRep.error)
     }
     await youdao.markWordToAnki(word.id);
   }

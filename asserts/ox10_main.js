@@ -94,7 +94,7 @@ var oaldpeConfig = {
 
     // 【配置项22：是否展开折叠块】（浅蓝色折叠区，如 Extra Examples 更多例句）
     // 选项（默认为false）：false=不展开，true=展开
-    unfoldUnbox: true,
+    unfoldUnbox: false,
 
     // 【配置项23：是否展开 Phrase Sections】（习语 Idioms、词组 Phrasal Verbs）
     // 选项（默认为false）：false=不展开，true=展开
@@ -135,22 +135,22 @@ var oaldpeConfig = {
     // 选项（默认仅展开词源）：false=不展开，true=展开
     autoUnfoldUnbox: {
         'british_american': false, // British/American (英式 / 美式)
-        'colloc': false,           // Collocations (词语搭配)
-        'cult': false,             // Culture (文化)
-        'express': false,          // Express Yourself (情景表达)
+        'colloc': true,           // Collocations (词语搭配)
+        'cult': true,             // Culture (文化)
+        'express': true,          // Express Yourself (情景表达)
         'extra_examples': false,   // Extra Examples (更多例句)
-        'grammar': false,          // Grammar Point (语法说明)
+        'grammar': true,          // Grammar Point (语法说明)
         'homophone': false,        // Homophones (同音词)
         'langbank': false,         // Language Bank (用语库)
-        'mlt': false,              // More Like This (同类词语学习)
-        'more_about': false,       // More About (补充说明)
-        'snippet': false,          // Oxford Collocations Dictionary (牛津搭配词典)
-        'synonyms': false,         // Synonyms (同义词辨析)
-        'verbforms': false,        // Verb Forms (动词形式)
-        'vocab': false,            // Vocabulary Building (词汇扩充)
-        'which_word': false,       // Which Word? (词语辨析)
-        'wordfamily': false,       // Word Family (词族)
-        'wordfinder': false,       // Wordfinder (联想词)
+        'mlt': true,              // More Like This (同类词语学习)
+        'more_about': true,       // More About (补充说明)
+        'snippet': true,          // Oxford Collocations Dictionary (牛津搭配词典)
+        'synonyms': true,         // Synonyms (同义词辨析)
+        'verbforms': true,        // Verb Forms (动词形式)
+        'vocab': true,            // Vocabulary Building (词汇扩充)
+        'which_word': true,       // Which Word? (词语辨析)
+        'wordfamily': true,       // Word Family (词族)
+        'wordfinder': true,       // Wordfinder (联想词)
         'wordorigin': true,        // Word Origin (词源)
     },
 };
