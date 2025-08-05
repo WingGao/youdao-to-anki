@@ -33,7 +33,7 @@ export class Eudic {
     this.config = config;
     this.client = axios.create({
       headers: {
-        'Authorization': config.authorization,
+        'Authorization': config?.authorization,
       }
     });
   }

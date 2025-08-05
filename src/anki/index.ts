@@ -111,6 +111,11 @@ div.center {
   return res.result;
 }
 
+/**
+ * 添加卡片到Anki，全局为一
+ * @param deckName
+ * @param note
+ */
 export async function addToDeck(deckName: string, note: IAnkiNoteFields) {
   logger.info(`addToDeck ${deckName} ${note.word}`);
   let noteData: any = {
@@ -123,7 +128,10 @@ export async function addToDeck(deckName: string, note: IAnkiNoteFields) {
     },
     "options": {
       "allowDuplicate": false,
-      "duplicateScope": "deck",
+      // "duplicateScope": "deck",
+      "duplicateScopeOptions": {
+        "checkAllModels": true
+      }
     },
   }
   if (note.audio != null) {

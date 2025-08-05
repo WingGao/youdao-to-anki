@@ -26,9 +26,15 @@ async function syncWordsToAnki(words: any[], markWordSynced?: (wordId: any) => P
     if (oxWord.word == null || oxWord.word.toLowerCase() != word.word.toLowerCase()) {
       logger.info(`${word.word} 与 ox10 查词 ${oxWord.word} 结果不一致，跳过`);
     } else {
-      //TODO 检查anki是否存在相同的卡片
       const ankiRep = await anki.addToDeck(config.anki.defaultDeck, await oxWord.toAnkiFields());
-      if (ankiRep.error != null) throw new Error(ankiRep.error)
+      if (ankiRep.error != null) {
+        switch (ankiRep.error) {
+          case "cannot create note because it is a duplicate":
+            break
+          default:
+            throw new Error(ankiRep.error)
+        }
+      }
     }
 
     if (markWordSynced) {
@@ -46,7 +52,7 @@ async function main() {
   if (_.size(config.eudic.authorization) > 0) {
     await eudic.syncToLocal();
   }
-  return
+  // return
   // await anki.addOX10Model() //先添加模型
   // await anki.syncOX10ModelJs();  //先添加模型
 
@@ -56,7 +62,7 @@ async function main() {
     const words = await listAllWords(globalDataSource, wordTable);
     await syncWordsToAnki(words, id => markWordToAnki(globalDataSource, wordTable, id));
   }
-  
+
   // //TODO 拆解ox10的Idioms/Phrasal Verbs
   // const oxWord = await ox10Lookup('ask');
   // // return
