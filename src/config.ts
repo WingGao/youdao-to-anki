@@ -1,7 +1,6 @@
 import yaml from 'js-yaml';
 import fs from 'fs';
 import path from 'path';
-import { DataSource } from "typeorm"
 import Logger from "log4js";
 
 export interface IConfig {
@@ -9,6 +8,9 @@ export interface IConfig {
     workDir: string;
     youdao: {
         cookie: string;
+    }
+    eudic: {
+        authorization: string;
     }
     anki: {
         connect: string;

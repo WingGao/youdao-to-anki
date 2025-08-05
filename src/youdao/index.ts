@@ -59,24 +59,3 @@ export async function syncToLocal() {
   if (deleteIds.length > 0) await wordRepo.remove(deleteIds.map(v => ({id: v})))
   logger.info(`保存单词 ${data.data.items.length}`);
 }
-
-/**
- * 获取所有单词
- * @param notAnki true=获取未同步到anki的
- */
-export async function listAllWords(notAnki = false) {
-  const wordRepo = globalDataSource.getRepository(Word);
-  let opt = {}
-  if (notAnki) opt = {toAnkiTime: IsNull()}
-  const words = await wordRepo.findBy(opt);
-  return words;
-}
-
-/**
- * 标记单词为已同步到anki
- * @param id
- * @returns
- */
-export async function markWordToAnki(id: string) {
-  return await globalDataSource.getRepository(Word).update({id}, {toAnkiTime: new Date()});
-}

@@ -1,9 +1,11 @@
 # Youdao To Anki
 
-将有道词典的单词本导入到anki中
+将有道/欧路的单词本导入到anki中
+
+![anki-card-0.png](doc/anki-card-0.png)
 
 流程为：
-* 从有道单词本同步数据到本地
+* 从有道/欧路单词本同步数据到本地
 * 在牛津高阶中查找单词数据
 * 将单词数据导入到anki中
 
@@ -18,7 +20,7 @@ pnpm run start -- --dir=./local
 ```
 
 ### Anki配置
-* 安装插件 https://ankiweb.net/shared/info/2055492159 
+* 安装插件 https://ankiweb.net/shared/info/2055492159
 
 ### 牛津高阶双解第10版
 字典：

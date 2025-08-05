@@ -1,6 +1,11 @@
 youdao:
   cookie: '' # https://dict.youdao.com/webwordbook/wordlist 的 cookie
 
+# 欧路词典
+eudic:
+  authorization: '' # https://my.eudic.net/OpenAPI/Authorization
+
+
 anki:
   connect: http://127.0.0.1:8765 # anki connect 的地址
   defaultDeck: 'Youdao' # 默认的anki deck
