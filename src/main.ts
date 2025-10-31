@@ -8,6 +8,7 @@ import * as anki from './anki';
 import * as _ from 'lodash-es'
 import {Eudic, EudicWord} from "./eudic";
 import {listAllWords, markWordToAnki, Word} from "./youdao/entity";
+import {loadLocalWords} from "./localwords";
 
 const args = Parse(process.argv)
 let workDir = args.dir || process.cwd();
@@ -15,10 +16,15 @@ const config = loadConfig(path.join(workDir, 'config.yaml'));
 const logger = getLogger('main');
 
 
-async function syncWordsToAnki(words: any[], markWordSynced?: (wordId: any) => Promise<any>) {
+async function syncWordsToAnki(words: Array<{ id?: any, word: string }>, markWordSynced?: (wordId: any) => Promise<any>) {
   for (const word of words) {
     if (word.word.indexOf(' ') != -1) {
       logger.info(`${word.word} 包含空格，跳过`);
+      continue;
+    }
+    // 先判断anki中是否存在
+    if (await anki.checkNoteExist(word.word)) {
+      logger.warn(`${word.word} 已存在，跳过`)
       continue;
     }
 
@@ -26,6 +32,12 @@ async function syncWordsToAnki(words: any[], markWordSynced?: (wordId: any) => P
     if (oxWord.word == null || oxWord.word.toLowerCase() != word.word.toLowerCase()) {
       logger.info(`${word.word} 与 ox10 查词 ${oxWord.word} 结果不一致，跳过`);
     } else {
+      // 检查oxword
+      if (await anki.checkNoteExist(oxWord.word)) {
+        logger.warn(`${oxWord.word} 已存在，跳过`)
+        continue;
+      }
+
       const ankiRep = await anki.addToDeck(config.anki.defaultDeck, await oxWord.toAnkiFields());
       if (ankiRep.error != null) {
         switch (ankiRep.error) {
@@ -57,11 +69,14 @@ async function main() {
   // await anki.syncOX10ModelJs();  //先添加模型
 
   // 同步到anki
-  const wordTables = [Word, EudicWord]
-  for (const wordTable of wordTables) {
-    const words = await listAllWords(globalDataSource, wordTable);
-    await syncWordsToAnki(words, id => markWordToAnki(globalDataSource, wordTable, id));
-  }
+  // const wordTables = [Word, EudicWord]
+  // for (const wordTable of wordTables) {
+  //   const words = await listAllWords(globalDataSource, wordTable);
+  //   await syncWordsToAnki(words, id => markWordToAnki(globalDataSource, wordTable, id));
+  // }
+  // 同步本地到anki
+  const localWords = await loadLocalWords(path.join(workDir, 'words.txt'));
+  await syncWordsToAnki(localWords);
 
   // //TODO 拆解ox10的Idioms/Phrasal Verbs
   // const oxWord = await ox10Lookup('ask');

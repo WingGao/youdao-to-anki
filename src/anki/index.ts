@@ -26,7 +26,8 @@ export interface IAnkiRepBase {
 let _client: AxiosInstance;
 
 function getClient() {
-  // https://foosoft.net/projects/anki-connect/
+  // https://ankiweb.net/shared/info/2055492159
+  // https://git.sr.ht/~foosoft/anki-connect
   if (_client == null) {
     _client = axios.create({
       baseURL: getConfig().anki.connect,
@@ -109,6 +110,22 @@ div.center {
     throw new Error(`添加OX10模型失败: ${res.error}`);
   }
   return res.result;
+}
+
+/**
+ * 检查卡片是否存在
+ * @param word
+ * @returns
+ */
+export async function checkNoteExist(word: string): Promise<boolean> {
+  const res = await post({
+    "action": "findNotes",
+    "version": 6,
+    "params": {
+      "query": `Front:"${word}"`
+    }
+  });
+  return res.result.length > 0;
 }
 
 /**
