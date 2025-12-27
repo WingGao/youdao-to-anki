@@ -114,18 +114,32 @@ div.center {
 
 /**
  * 检查卡片是否存在
- * @param word
+ * @param words
  * @returns
  */
-export async function checkNoteExist(word: string): Promise<boolean> {
+export async function checkNoteExist(words: Array<string>): Promise<Map<string, boolean>> {
+  const exists: Map<string, boolean> = new Map();
+  let query = words.map(w => {
+    exists.set(w,false)
+    return `word:"${w}"`
+  }).join(' or ')
+
   const res = await post({
-    "action": "findNotes",
+    "action": "notesInfo",
     "version": 6,
     "params": {
-      "query": `Front:"${word}"`
+      "query": query
     }
   });
-  return res.result.length > 0;
+
+  for (const info of res.result) {
+    const w = info.fields?.word?.value
+    if (exists.has(w)) {
+      exists.set(w, true);
+    }
+  }
+
+  return exists;
 }
 
 /**

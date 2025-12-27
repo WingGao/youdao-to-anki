@@ -10,6 +10,7 @@ anki:
   connect: http://127.0.0.1:8765 # anki connect 的地址
   defaultDeck: 'Youdao' # 默认的anki deck
   defaultNoteModel: 'OX10' # 默认的anki note model
+  localWordsDeck: '英语-词频' # 本地单词添加的anki deck，如果为空，则使用 defaultDeck
 
 mdict:
   oald10: "OALD 2024.09" # 牛津高阶双解第10版完美版（OALDPE）的文件夹

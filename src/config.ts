@@ -16,6 +16,7 @@ export interface IConfig {
         connect: string;
         defaultDeck: string;
         defaultNoteModel: string;
+        localWordsDeck?: string;
     }
     mdict: {
         oald10: string;
